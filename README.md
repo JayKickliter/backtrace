@@ -153,16 +153,24 @@ Using The Unwinder
 
 To compile and link this sample using a recent GCC ARM Embedded compiler:
 
-	arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -I /path/to/include \
-	-fmessage-length=0 -fsigned-char -ffunction-sections \
-	-fdata-sections -std=c11 -mpoke-function-name -funwind-tables \
-	-fno-omit-frame-pointer ping-pong.c -o ping-pong.afx \
-	--specs=rdimon.specs --specs=nano.specs -L /path/to/lib -lbacktrace
+TODO: show cmake
+
+    arm-none-eabi-gcc -mthumb -mcpu=cortex-m3 -I /path/to/include \
+    -fmessage-length=0 -fsigned-char -ffunction-sections \
+    -fdata-sections -std=c11 -mpoke-function-name -funwind-tables \
+    -fno-omit-frame-pointer ping-pong.c -o ping-pong.afx \
+    --specs=rdimon.specs --specs=nano.specs -L /path/to/lib -lbacktrace
+
 
 To run ping-poing.afx with qemu:
 
-	> qemu-arm -cpu cortex-m3 ./ping-pong.afx
-  	  pong - 10
+      > qemu-system-arm                                \
+           -cpu cortex-m3                              \
+           -machine lm3s6965evb                        \
+           -nographic                                  \
+           -semihosting-config enable=on,target=native \
+           -kernel samples/pingpong
+      pong - 10
 	  pong - 9
 	  pong - 8
 	  pong - 7

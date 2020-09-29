@@ -12,6 +12,7 @@ if (CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
   set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
   project(Backtrace C)
   set(BACKTRACE_IS_STANDALONE TRUE)
+  option(BUILD_EXAMPLES "Build example applications" TRUE)
 else()
   # Some other cmake project has included us as a subproject,
   # i.e. `include(path/to/backtrace/CMakeLists.txt)` where
@@ -50,7 +51,8 @@ add_library(backtrace
   backtrace/backtrace.c
   )
 
-target_include_directories(backtrace PUBLIC
+target_include_directories(backtrace
+  PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>
   $<INSTALL_INTERFACE:include>
   )
@@ -76,4 +78,12 @@ elseif (CMAKE_C_COMPILER_ID MATCHES "GNU")
     # preceding the function prologue.
     -mpoke-function-name
     )
+endif()
+
+
+##########################################################################
+# Optional Targets                                                       #
+##########################################################################
+if(BUILD_EXAMPLES)
+  add_subdirectory(samples)
 endif()
